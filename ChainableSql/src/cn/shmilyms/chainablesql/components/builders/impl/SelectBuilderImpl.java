@@ -24,14 +24,18 @@ public class SelectBuilderImpl implements ISelectBuilder {
 		
 		if (from instanceof ISelectBuilder) {
 			sb.append("(");
-			sb.append(from.toSql());
+			from.toSql(sb);
 			sb.append(")");
 		}
 		else
-			sb.append(from.toSql());
+			from.toSql(sb);
 		if (cobuilder!=null) {
 			sb.append(" WHERE ");
-			sb.append(cobuilder.toSql());
+			cobuilder.toSql(sb);
+		}
+		if (obuilder!=null) {
+			sb.append(" ORDER BY ");
+			obuilder.toSql(sb);
 		}
 		return sb;
 	}
