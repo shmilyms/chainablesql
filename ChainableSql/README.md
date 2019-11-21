@@ -10,17 +10,14 @@ Code Example:
 				.select("DOB").alias("birthday")
 				.from(sb
 						.select("user")
-						.select("sales")
 						.select("DOB")
-						.select("VIP")
-						.select("vipExpired")
 						.from("users")
 						.where("VIP = 1")
-						.and("DOB != NULL")
+						.and(not("ISNULL(DOB)"))
 						.and(expr(CompOperator.GE,"sales","10000000"),not(expr(CompOperator.EQ,"vipExpired","1"))))
 				.orderBy("birthday", SqlOrders.DESC)
 				.finishSql();
 
 		System.out.println(sql);
 		
-		//SELECT user, DOB AS birthday FROM (SELECT user, sales, DOB, VIP, vipExpired FROM users WHERE (VIP = 1) AND (DOB != NULL) AND (sales >= 10000000) AND (NOT(vipExpired = 1)));
+		//SELECT user, DOB AS birthday FROM (SELECT user, DOB FROM users WHERE (VIP = 1) AND (NOT(ISNULL(DOB))) AND (sales >= 10000000) AND (NOT(vipExpired = 1)));
