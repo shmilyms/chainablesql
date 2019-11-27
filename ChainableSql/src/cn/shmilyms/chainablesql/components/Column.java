@@ -12,9 +12,16 @@ public class Column implements IComponent {
 		this.alias=alias;
 	}
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
-		return sb.append(column);
+		sb.append(column);
+		if (alias!=FLAG_NO_ALIAS) {
+			sb.append(" ");
+			sb.append(alias);
+		}
+		else
+			;
+		
 	}
 	public String toSqlWithAlias() {
 		return alias!=FLAG_NO_ALIAS ? column+" AS "+alias : column;

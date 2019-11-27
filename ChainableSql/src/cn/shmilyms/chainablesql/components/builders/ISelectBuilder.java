@@ -22,4 +22,8 @@ public interface ISelectBuilder extends IComponent{
 	public ISelectBuilder orderBy(String...columns);
 	public ISelectBuilder orderBy(String column,SqlOrders order);
 	
+	//public ISelectBuilder join(SqlJoinTypes type,String table);
+	//public ISelectBuilder join(SqlJoinTypes type,String table,String alias);
+	//public ISelectBuilder on(String condition);
+	//public ISelectBuilder on(String...conditions);
 }

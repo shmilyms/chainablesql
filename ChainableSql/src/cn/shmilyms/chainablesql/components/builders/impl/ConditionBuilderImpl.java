@@ -18,11 +18,12 @@ public class ConditionBuilderImpl implements IConditionBuilder{
 		operators = new ArrayList<>();
 	}
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		Iterator<IComponent> ci = conditions.iterator();
 		Iterator<BooleanOperator> bi = operators.iterator();
 		
+		sb.append(" WHERE ");
 		if (ci.hasNext()) {
 			sb.append("(");
 			sb.append(ci.next().toSql());
@@ -37,7 +38,6 @@ public class ConditionBuilderImpl implements IConditionBuilder{
 			}
 		}
 		
-		return sb;
 	}
 	
 	@Override
@@ -72,9 +72,9 @@ public class ConditionBuilderImpl implements IConditionBuilder{
 			this.condition=condition;
 		}
 		@Override
-		public StringBuilder toSql(StringBuilder sb) {
+		public void appendToBuilder(StringBuilder sb) {
 			// TODO Auto-generated method stub
-			return sb.append(condition);
+			sb.append(condition);
 		}
 		
 	}

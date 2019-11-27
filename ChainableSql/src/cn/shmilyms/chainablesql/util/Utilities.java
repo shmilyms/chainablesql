@@ -16,6 +16,7 @@ public class Utilities {
 		return sb;
 	}
 	
+	
 	public static StringBuilder mergeStrings(Collection<String> strings,String seperator) {
 		
 		return mergeStrings(strings,seperator,new StringBuilder());
@@ -27,9 +28,9 @@ public class Utilities {
 		AND,OR;
 
 		@Override
-		public StringBuilder toSql(StringBuilder sb) {
+		public void appendToBuilder(StringBuilder sb) {
 			// TODO Auto-generated method stub
-			return sb.append(this.toString());
+			sb.append(this.toString());
 		}
 	}
 	public enum CompOperator implements IComponent{
@@ -40,18 +41,18 @@ public class Utilities {
 			this.sqlOperator=sqlOperator;
 		}
 		@Override
-		public StringBuilder toSql(StringBuilder sb) {
+		public void appendToBuilder(StringBuilder sb) {
 			// TODO Auto-generated method stub
-			return sb.append(this.sqlOperator);
+			sb.append(this.sqlOperator);
 		}
 	}
 	public enum SqlOrders implements IComponent{
 		ASC,DESC;
 
 		@Override
-		public StringBuilder toSql(StringBuilder sb) {
+		public void appendToBuilder(StringBuilder sb) {
 			// TODO Auto-generated method stub
-			return sb.append(this.toString());
+			sb.append(this.toString());
 		}
 		
 	}

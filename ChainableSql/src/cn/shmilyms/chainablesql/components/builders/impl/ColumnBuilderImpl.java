@@ -6,25 +6,22 @@ import java.util.List;
 
 import cn.shmilyms.chainablesql.components.Column;
 import cn.shmilyms.chainablesql.components.builders.IColumnBuilder;
-import cn.shmilyms.chainablesql.util.Utilities;
 
 public class ColumnBuilderImpl implements IColumnBuilder {
 	private List<Column> columns;
 	
-	@Override
-	public StringBuilder toSql(StringBuilder sb) {
-		// TODO Auto-generated method stub
-		List<String> strings = new ArrayList<>(columns.size());
-		columns.forEach((k)->strings.add(k.toSql()));
-		return Utilities.mergeStrings(strings, " ",sb);
-	}
 	
 	@Override
-	public StringBuilder toSqlWithAlias(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
-		List<String> strings = new ArrayList<>(columns.size());
-		columns.forEach((k)->strings.add(k.toSqlWithAlias()));
-		return Utilities.mergeStrings(strings, ", ",sb);
+		int count = 0;
+		int size = columns.size();
+		for (Column col : columns) {
+			count += 1;
+			col.appendToBuilder(sb);
+			if (count<size)
+				sb.append(", ");
+		}
 	}
 	
 	@Override
@@ -74,6 +71,12 @@ public class ColumnBuilderImpl implements IColumnBuilder {
 	public Column getColumn(String column) {
 		// TODO Auto-generated method stub
 		return columns.get(columns.indexOf(column));
+	}
+
+	@Override
+	public void listen(String alias) {
+		// TODO Auto-generated method stub
+		this.alias(alias);
 	}
 
 

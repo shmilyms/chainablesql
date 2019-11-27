@@ -19,9 +19,9 @@ public class SqlBuilderImpl implements ISqlBuilder {
 	}
 
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
-		return last == null ? null : last.toSql(sb);
+		last.appendToBuilder(sb);
 	}
 	
 

@@ -1,7 +1,7 @@
 package cn.shmilyms.chainablesql.components.builders.impl;
 
-import cn.shmilyms.chainablesql.components.Column;
 import cn.shmilyms.chainablesql.components.IComponent;
+import cn.shmilyms.chainablesql.components.builders.IAliasListener;
 import cn.shmilyms.chainablesql.components.builders.IBooleanBuilder;
 import cn.shmilyms.chainablesql.components.builders.IColumnBuilder;
 import cn.shmilyms.chainablesql.components.builders.IConditionBuilder;
@@ -14,30 +14,30 @@ public class SelectBuilderImpl implements ISelectBuilder {
 	private IColumnBuilder cbuilder;
 	private IConditionBuilder cobuilder;
 	private IOrderBuilder obuilder;
+	
 	private IComponent from;
+	private IAliasListener aliasListener;
+	
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		sb.append("SELECT ");
-		cbuilder.toSqlWithAlias(sb);
+		cbuilder.appendToBuilder(sb);
 		sb.append(" FROM ");
 		
-		if (from instanceof ISelectBuilder) {
-			sb.append("(");
-			from.toSql(sb);
-			sb.append(")");
+		if (from!=null) {
+			
+			from.appendToBuilder(sb);
 		}
-		else
-			from.toSql(sb);
+			
 		if (cobuilder!=null) {
-			sb.append(" WHERE ");
-			cobuilder.toSql(sb);
+			
+			cobuilder.appendToBuilder(sb);
 		}
 		if (obuilder!=null) {
-			sb.append(" ORDER BY ");
-			obuilder.toSql(sb);
+			
+			obuilder.appendToBuilder(sb);
 		}
-		return sb;
 	}
 
 	@Override
@@ -46,6 +46,7 @@ public class SelectBuilderImpl implements ISelectBuilder {
 		if (cbuilder==null)
 			cbuilder=new ColumnBuilderImpl();
 		cbuilder.column(column);
+		aliasListener=cbuilder;
 		return this;
 	}
 
@@ -55,14 +56,18 @@ public class SelectBuilderImpl implements ISelectBuilder {
 		if (cbuilder==null)
 			cbuilder=new ColumnBuilderImpl();
 		cbuilder.columns(columns);
+		aliasListener=cbuilder;
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder alias(String alias) {
 		// TODO Auto-generated method stub
-		if (cbuilder!=null)
-			cbuilder.alias(alias);
+		if (aliasListener == null) {
+			
+		}
+		else
+			aliasListener.listen(alias);
 		return this;
 	}
 	@Override
@@ -77,14 +82,18 @@ public class SelectBuilderImpl implements ISelectBuilder {
 	@Override
 	public ISelectBuilder from(String table) {
 		// TODO Auto-generated method stub
-		this.from = new Column(table);
+		AliasStringWrapper wrapper = new AliasStringWrapper(table);
+		this.from = wrapper;
+		this.aliasListener = wrapper;
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder from(ISelectBuilder builder) {
 		// TODO Auto-generated method stub
-		this.from = builder;
+		AliasSubSelectWrapper wrapper = new AliasSubSelectWrapper(builder);
+		this.from = wrapper;
+		aliasListener = wrapper;
 		return this;
 	}
 
@@ -155,6 +164,55 @@ public class SelectBuilderImpl implements ISelectBuilder {
 		return this;
 	}
 
+	private class AliasStringWrapper implements IComponent,IAliasListener{
+		String table;
+		String alias;
+		AliasStringWrapper(String table){
+			this.table=table;
+		}
+		@Override
+		public void listen(String alias) {
+			// TODO Auto-generated method stub
+			this.alias = alias;
+		}
 
+		@Override
+		public void appendToBuilder(StringBuilder sb) {
+			// TODO Auto-generated method stub
+			sb.append(table);
+			if (alias!=null) {
+				sb.append(" ");
+				sb.append(alias);
+			}
+		}
+		
+	}
+	private class AliasSubSelectWrapper implements IComponent,IAliasListener{
+		IComponent builder;
+		String alias;
+		AliasSubSelectWrapper(IComponent builder){
+			this.builder=builder;
+		}
+		@Override
+		public void listen(String alias) {
+			// TODO Auto-generated method stub
+			this.alias = alias;
+		}
+
+		@Override
+		public void appendToBuilder(StringBuilder sb) {
+			// TODO Auto-generated method stub
+			sb.append("(");
+			builder.appendToBuilder(sb);
+			sb.append(")");
+			if (alias!=null) {
+				sb.append(" ");
+				sb.append(alias);
+			}
+			else
+				;
+		}
+		
+	}
 
 }

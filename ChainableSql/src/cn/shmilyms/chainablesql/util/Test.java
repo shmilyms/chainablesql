@@ -23,9 +23,10 @@ public class Test extends TestCase{
 						.where("VIP = 1")
 						.and(not("ISNULL(DOB)"))
 						.and(expr(CompOperator.GE,"sales","10000000"),not(expr(CompOperator.EQ,"vipExpired","1"))))
+				.alias("tableAlias")
 				.orderBy("birthday", SqlOrders.DESC)
 				.orderBy("user")
-				.finishSql();
+				.toFinishedSql();
 
 		System.out.println(sql);
 		

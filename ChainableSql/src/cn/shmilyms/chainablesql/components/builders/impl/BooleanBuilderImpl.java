@@ -9,7 +9,7 @@ public class BooleanBuilderImpl implements IBooleanBuilder {
 	CompOperator op;
 	boolean not = false;
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		if (not) {
 			sb.append("NOT(");
@@ -18,7 +18,6 @@ public class BooleanBuilderImpl implements IBooleanBuilder {
 		}
 		else
 			toSqlAppend(sb);
-		return sb;
 	}
 	private StringBuilder toSqlAppend(StringBuilder sb) {
 		sb.append(param1);

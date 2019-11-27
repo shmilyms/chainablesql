@@ -9,21 +9,22 @@ import cn.shmilyms.chainablesql.util.Utilities.SqlOrders;
 public class OrderBuilderImpl implements IOrderBuilder {
 	private Map<String,SqlOrders> columns = new LinkedHashMap<>();
 	@Override
-	public StringBuilder toSql(StringBuilder sb) {
+	public void appendToBuilder(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		
 		boolean first = true;
+		
+		sb.append(" ORDER BY ");
+		
 		for (Map.Entry<String,SqlOrders> entry : columns.entrySet()) {
 			if (!first) sb.append(", ");
 			sb.append(entry.getKey());
 			sb.append(" ");
-			entry.getValue().toSql(sb);
+			entry.getValue().appendToBuilder(sb);
 			
 				
 			first = false;
 		}
-		
-		return sb;
 	}
 
 	@Override

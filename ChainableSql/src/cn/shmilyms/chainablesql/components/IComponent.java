@@ -3,12 +3,17 @@ package cn.shmilyms.chainablesql.components;
 public interface IComponent {
 
 	
-	public StringBuilder toSql(StringBuilder sb);
+	public void appendToBuilder(StringBuilder sb);
 	
 	public default String toSql() {
-		return toSql(new StringBuilder()).toString();
+		StringBuilder sb = new StringBuilder();
+		appendToBuilder(sb);
+		return sb.toString();
 	}
-	public default String finishSql() {
-		return toSql(new StringBuilder()).append(";").toString();
+	public default String toFinishedSql() {
+		StringBuilder sb = new StringBuilder();
+		appendToBuilder(sb);
+		sb.append(";");
+		return sb.toString();
 	}
 }
