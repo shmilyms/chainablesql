@@ -46,6 +46,19 @@ public class Utilities {
 			sb.append(this.sqlOperator);
 		}
 	}
+	public enum JoinTypes implements IComponent{
+		LEFT("LEFT JOIN"),RIGHT("RIGHT JOIN"),INNER("INNER JOIN"),OUTER("OUTER JOIN");
+		
+		private String maskedSql;
+		JoinTypes(String maskedSql) {
+			this.maskedSql=maskedSql;
+		}
+		@Override
+		public void appendToBuilder(StringBuilder sb) {
+			// TODO Auto-generated method stub
+			sb.append(this.maskedSql);
+		}
+	}
 	public enum SqlOrders implements IComponent{
 		ASC,DESC;
 

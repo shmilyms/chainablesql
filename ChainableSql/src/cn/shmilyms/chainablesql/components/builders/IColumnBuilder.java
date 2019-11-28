@@ -1,6 +1,7 @@
 package cn.shmilyms.chainablesql.components.builders;
 
 import cn.shmilyms.chainablesql.components.Column;
+import cn.shmilyms.chainablesql.components.IAliasListener;
 import cn.shmilyms.chainablesql.components.IComponent;
 
 public interface IColumnBuilder extends IComponent,IAliasListener{

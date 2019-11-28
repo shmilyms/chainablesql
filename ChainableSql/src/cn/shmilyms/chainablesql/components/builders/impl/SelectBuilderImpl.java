@@ -1,7 +1,7 @@
 package cn.shmilyms.chainablesql.components.builders.impl;
 
+import cn.shmilyms.chainablesql.components.IAliasListener;
 import cn.shmilyms.chainablesql.components.IComponent;
-import cn.shmilyms.chainablesql.components.builders.IAliasListener;
 import cn.shmilyms.chainablesql.components.builders.IBooleanBuilder;
 import cn.shmilyms.chainablesql.components.builders.IColumnBuilder;
 import cn.shmilyms.chainablesql.components.builders.IConditionBuilder;
@@ -12,7 +12,7 @@ import cn.shmilyms.chainablesql.util.Utilities.SqlOrders;
 public class SelectBuilderImpl implements ISelectBuilder {
 	
 	private IColumnBuilder cbuilder;
-	private IConditionBuilder cobuilder;
+	private IConditionBuilder whereBuilder;
 	private IOrderBuilder obuilder;
 	
 	private IComponent from;
@@ -30,9 +30,9 @@ public class SelectBuilderImpl implements ISelectBuilder {
 			from.appendToBuilder(sb);
 		}
 			
-		if (cobuilder!=null) {
+		if (whereBuilder!=null) {
 			
-			cobuilder.appendToBuilder(sb);
+			whereBuilder.appendToBuilder(sb);
 		}
 		if (obuilder!=null) {
 			
@@ -100,37 +100,37 @@ public class SelectBuilderImpl implements ISelectBuilder {
 	@Override
 	public ISelectBuilder where(String condition) {
 		// TODO Auto-generated method stub
-		if (cobuilder==null) 
-			cobuilder = new ConditionBuilderImpl();
-		cobuilder.and(condition);
+		if (whereBuilder==null) 
+			whereBuilder = new ConditionBuilderImpl();
+		whereBuilder.and(condition);
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder and(String... conditions) {
 		// TODO Auto-generated method stub
-		cobuilder.and(conditions);
+		whereBuilder.and(conditions);
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder or(String... conditions) {
 		// TODO Auto-generated method stub
-		cobuilder.or(conditions);
+		whereBuilder.or(conditions);
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder and(IBooleanBuilder... conditions) {
 		// TODO Auto-generated method stub
-		cobuilder.and(conditions);
+		whereBuilder.and(conditions);
 		return this;
 	}
 
 	@Override
 	public ISelectBuilder or(IBooleanBuilder... conditions) {
 		// TODO Auto-generated method stub
-		cobuilder.or(conditions);
+		whereBuilder.or(conditions);
 		return this;
 	}
 
